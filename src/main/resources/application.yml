@@ -1,0 +1,7 @@
+info:
+  build:
+    version: '@project.version@'
+    name: '@project.name@'
+
+server:
+  port: 8090
