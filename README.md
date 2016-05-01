@@ -5,7 +5,7 @@ Esse software é a "resposta" para o teste da Elo7 (https://gist.github.com/elo7
 
 #Serviços
 
-1. Cadastrar uma missão espacial da seguinte forma
+1. Cadastrar uma missão espacial
 
     **HTTP** : POST
   
