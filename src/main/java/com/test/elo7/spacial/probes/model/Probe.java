@@ -3,22 +3,34 @@ package com.test.elo7.spacial.probes.model;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.test.elo7.spacial.probes.exception.PlateauLimitException;
 
 public class Probe {
 
+	private int id;
+
+	@JsonIgnore
 	private Plateau plateau;
 	private Coordinate coordinate;
 	private Direction direction;
 
-	public Probe(Plateau plateau, Coordinate coordinate, Direction direction) {
+	@JsonInclude(Include.NON_NULL)
+	private String error;
 
-		if (Objects.isNull(plateau) || Objects.isNull(coordinate) || Objects.isNull(direction)) {
+	protected Probe() {
+	}
+
+	public Probe(int id, Coordinate coordinate, Direction direction) {
+
+		if (Objects.isNull(coordinate) || Objects.isNull(direction)) {
 			throw new IllegalArgumentException(
-					String.format("Invalid parameters plateau: [%s], coordinate : [%s], direction [%s]", plateau, coordinate, direction));
+					String.format("Invalid parameters coordinate : [%s], direction [%s]", coordinate, direction));
 		}
 
-		this.plateau = plateau;
+		this.id = id;
 		this.coordinate = coordinate;
 		this.direction = direction;
 	}
@@ -34,6 +46,36 @@ public class Probe {
 		}
 	}
 
+	private void move() throws PlateauLimitException {
+
+		if (coordinate.simulateAddX(direction.getCoordinate().getX()) <= plateau.getLimitX()) {
+			coordinate.addX(direction.getCoordinate().getX());
+		} else {
+			throw getPlateauLimitException();
+		}
+
+		if (coordinate.simulateAddY(direction.getCoordinate().getY()) <= plateau.getLimitY()) {
+			coordinate.addY(direction.getCoordinate().getY());
+		} else {
+			throw getPlateauLimitException();
+		}
+
+	}
+
+	private PlateauLimitException getPlateauLimitException() throws PlateauLimitException {
+		return new PlateauLimitException(
+				String.format("The probe tried to exceed the plateau limit: probe position [%s], plateau limit [%s].",
+						this.coordinate, plateau.getArea()));
+	}
+
+	private void changeDirection(Action action) {
+		direction = direction.rotateFor(action);
+	}
+
+	public int getId() {
+		return id;
+	}
+
 	public Coordinate getCoordinate() {
 		return coordinate;
 	}
@@ -42,28 +84,16 @@ public class Probe {
 		return direction;
 	}
 
-	private void move() throws PlateauLimitException {
-
-		if (coordinate.getX() < plateau.getX()) {
-			coordinate.addX(direction.getCoordinate().getX());
-		} else {
-			getPlateauLimitException();
-		}
-
-		if (coordinate.getY() < plateau.getY()) {
-			coordinate.addY(direction.getCoordinate().getY());
-		} else {
-			getPlateauLimitException();
-		}
-
+	public void setPlateau(Plateau plateau) {
+		this.plateau = plateau;
 	}
 
-	private void getPlateauLimitException() throws PlateauLimitException {
-		throw new PlateauLimitException(String.format("The probe tried to exceed the plateau limit: probe position [%s], plateau limit [%s].", this.coordinate, plateau));
+	public String getError() {
+		return error;
 	}
 
-	private void changeDirection(Action action) {
-		direction = direction.rotateFor(action);
+	public void setError(String error) {
+		this.error = error;
 	}
 
 }

@@ -13,10 +13,10 @@ public class CoordinateTest {
 
 		Coordinate coordinate = new Coordinate(3, 2);
 
-		// THEN
+		// WHEN
 		coordinate.addX(x);
 
-		// WHEN
+		// THEN
 		assertEquals(4, coordinate.getX());
 	}
 
@@ -25,13 +25,39 @@ public class CoordinateTest {
 		// GIVEN
 		int y = 1;
 
-		Coordinate coordinate = new Coordinate(5, 7);
-
-		// THEN
-		coordinate.addY(y);
+		Coordinate coordinate = new Coordinate();
 
 		// WHEN
-		assertEquals(8, coordinate.getY());
+		coordinate.addY(y);
+
+		// THEN
+		assertEquals(1, coordinate.getY());
+	}
+
+	@Test
+	public void simulateOnAxisX() {
+		// GIVEN
+		int x = 1;
+		Coordinate coordinate = new Coordinate();
+
+		// WHEN
+		int simulateAddX = coordinate.simulateAddX(x);
+
+		// THEN
+		assertEquals(1, simulateAddX);
+	}
+
+	@Test
+	public void simulateOnAxisY() {
+		// GIVEN
+		int y = 1;
+		Coordinate coordinate = new Coordinate(5, 6);
+
+		// WHEN
+		int simulateAddY = coordinate.simulateAddY(y);
+
+		// THEN
+		assertEquals(7, simulateAddY);
 	}
 
 }

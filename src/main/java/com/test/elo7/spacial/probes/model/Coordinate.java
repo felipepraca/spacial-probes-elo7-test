@@ -5,25 +5,36 @@ public class Coordinate {
 	private int x;
 	private int y;
 
+	protected Coordinate() {
+	}
+
 	public Coordinate(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	public int simulateAddX(int x) {
+		return getX() + x;
+	}
+
+	public void addX(int x) {
+		this.x = simulateAddX(x);
+	}
+
+	public int simulateAddY(int y) {
+		return getY() + y;
+	}
+
+	public void addY(int y) {
+		this.y = simulateAddY(y);
 	}
 
 	public int getX() {
 		return x;
 	}
 
-	public void addX(int x) {
-		this.x += x;
-	}
-
 	public int getY() {
 		return y;
-	}
-
-	public void addY(int y) {
-		this.y += y;
 	}
 
 	@Override
@@ -44,7 +55,7 @@ public class Coordinate {
 
 	@Override
 	public String toString() {
-		return "Coordinate [x=" + x + ", y=" + y + "]";
+		return "[x=" + x + ", y=" + y + "]";
 	}
 
 }

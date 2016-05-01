@@ -19,14 +19,15 @@ public class ProbeTest {
 		Coordinate coordinate = new Coordinate(0, 0);
 		Direction direction = Direction.N;
 
-		Probe probe = new Probe(plateau, coordinate, direction);
+		Probe probe = new Probe(1, coordinate, direction);
+		probe.setPlateau(plateau);
 
 		List<Action> actions = Arrays.asList(Action.L, Action.L, Action.L, Action.R);
 
-		// THEN
+		// WHEN
 		probe.execute(actions);
 
-		// WHEN
+		// THEN
 		assertEquals(new Coordinate(0, 0), probe.getCoordinate());
 		assertEquals(Direction.S, probe.getDirection());
 	}
@@ -38,16 +39,17 @@ public class ProbeTest {
 		Coordinate coordinate = new Coordinate(1, 5);
 		Direction direction = Direction.E;
 
-		Probe probe = new Probe(plateau, coordinate, direction);
+		Probe probe = new Probe(1, coordinate, direction);
+		probe.setPlateau(plateau);
 
 		List<Action> actions = Arrays.asList(Action.M,
 											 Action.M,
 											 Action.M);
 
-		// THEN
+		// WHEN
 		probe.execute(actions);
 
-		// WHEN
+		// THEN
 		assertEquals(new Coordinate(4, 5), probe.getCoordinate());
 		assertEquals(Direction.E, probe.getDirection());
 	}
@@ -55,11 +57,12 @@ public class ProbeTest {
 	@Test
 	public void validateRotateAndeMove() throws PlateauLimitException {
 		// GIVEN
-		Plateau plateau = new Plateau(new Coordinate(5, 8));
+		Plateau plateau = new Plateau(new Coordinate(5, 5));
 		Coordinate coordinate = new Coordinate(1, 2);
 		Direction direction = Direction.N;
 
-		Probe probe = new Probe(plateau, coordinate, direction);
+		Probe probe = new Probe(1, coordinate, direction);
+		probe.setPlateau(plateau);
 
 		List<Action> actions = Arrays.asList(Action.L, Action.M,
 											 Action.L, Action.M,
@@ -67,12 +70,36 @@ public class ProbeTest {
 											 Action.L, Action.M,
 											 Action.M);
 
-		// THEN
+		// WHEN
 		probe.execute(actions);
 
-		// WHEN
+		// THEN
 		assertEquals(new Coordinate(1, 3), probe.getCoordinate());
 		assertEquals(Direction.N, probe.getDirection());
+	}
+
+	@Test
+	public void validateRotateAndeMove2() throws PlateauLimitException {
+		// GIVEN
+		Plateau plateau = new Plateau(new Coordinate(5, 5));
+		Coordinate coordinate = new Coordinate(3, 3);
+		Direction direction = Direction.E;
+
+		Probe probe = new Probe(1, coordinate, direction);
+		probe.setPlateau(plateau);
+
+		List<Action> actions = Arrays.asList(Action.M, Action.M,
+											 Action.R, Action.M,
+											 Action.M, Action.R,
+											 Action.M, Action.R,
+											 Action.R, Action.M);
+
+		// WHEN
+		probe.execute(actions);
+
+		// THEN
+		assertEquals(new Coordinate(5, 1), probe.getCoordinate());
+		assertEquals(Direction.E, probe.getDirection());
 	}
 
 	@Test(expected = PlateauLimitException.class)
@@ -82,15 +109,16 @@ public class ProbeTest {
 		Coordinate coordinate = new Coordinate(0, 0);
 		Direction direction = Direction.N;
 
-		Probe probe = new Probe(plateau, coordinate, direction);
+		Probe probe = new Probe(1, coordinate, direction);
+		probe.setPlateau(plateau);
 
 		List<Action> actions = Arrays.asList(Action.M, Action.M, 
 											 Action.M, Action.M);
 
-		// THEN
+		// WHEN
 		probe.execute(actions);
 
-		// WHEN
+		// THEN
 		fail();
 	}
 
@@ -101,57 +129,42 @@ public class ProbeTest {
 		Coordinate coordinate = new Coordinate(0, 0);
 		Direction direction = Direction.E;
 
-		Probe probe = new Probe(plateau, coordinate, direction);
+		Probe probe = new Probe(1, coordinate, direction);
+		probe.setPlateau(plateau);
 
 		List<Action> actions = Arrays.asList(Action.M, Action.M, 
 											 Action.M, Action.M);
 
-		// THEN
+		// WHEN
 		probe.execute(actions);
 
-		// WHEN
-		fail();
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void errorToCreateProdeWithoutPlateau() {
-		// GIVEN
-		Plateau plateau = null;
-		Coordinate coordinate = new Coordinate(0, 0);
-		Direction direction = Direction.N;
-
 		// THEN
-		new Probe(plateau, coordinate, direction);
-
-		// WHEN
 		fail();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void errorToCreateProdeWithoutCoordinate() {
 		// GIVEN
-		Plateau plateau = new Plateau(new Coordinate(3, 3));
 		Coordinate coordinate = null;
 		Direction direction = Direction.N;
 
-		// THEN
-		new Probe(plateau, coordinate, direction);
-
 		// WHEN
+		new Probe(1, coordinate, direction);
+
+		// THEN
 		fail();
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void errorToCreateProdeWithoutDirection() {
 		// GIVEN
-		Plateau plateau = new Plateau(new Coordinate(3, 3));
 		Coordinate coordinate = new Coordinate(0, 0);
 		Direction direction = null;
 
-		// THEN
-		new Probe(plateau, coordinate, direction);
-
 		// WHEN
+		new Probe(1, coordinate, direction);
+
+		// THEN
 		fail();
 	}
 

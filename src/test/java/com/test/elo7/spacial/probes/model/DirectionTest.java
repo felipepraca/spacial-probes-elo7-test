@@ -11,13 +11,13 @@ public class DirectionTest {
 		// GIVEN
 		Direction directionInitial = Direction.N;
 
-		// THEN
+		// WHEN
 		Direction directionE = directionInitial.rotateFor(Action.R);
 		Direction directionS = directionE.rotateFor(Action.R);
 		Direction directionW = directionS.rotateFor(Action.R);
 		Direction directionN = directionW.rotateFor(Action.R);
 
-		// WHEN
+		// THEN
 		assertEquals(Direction.E, directionE);
 		assertEquals(Direction.S, directionS);
 		assertEquals(Direction.W, directionW);
@@ -29,13 +29,13 @@ public class DirectionTest {
 		// GIVEN
 		Direction directionInitial = Direction.N;
 
-		// THEN
+		// WHEN
 		Direction directionW = directionInitial.rotateFor(Action.L);
 		Direction directionS = directionW.rotateFor(Action.L);
 		Direction directionE = directionS.rotateFor(Action.L);
 		Direction directionN = directionE.rotateFor(Action.L);
 
-		// WHEN
+		// THEN
 		assertEquals(Direction.W, directionW);
 		assertEquals(Direction.S, directionS);
 		assertEquals(Direction.E, directionE);
