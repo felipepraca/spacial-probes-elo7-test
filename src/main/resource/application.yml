@@ -1,7 +1,6 @@
-info:
-  build:
-    version: '@project.version@'
-    name: '@project.name@'
+spring:
+  application:
+    name: spacial-probes
 
 server:
   port: 8090
