@@ -1,8 +1,13 @@
 package com.test.elo7.spacial.probes.model;
 
+import javax.validation.constraints.NotNull;
+
 public class Coordinate {
 
+	@NotNull(message = "Coordinate X required!")
 	private int x;
+
+	@NotNull(message = "Coordinate Y required!")
 	private int y;
 
 	protected Coordinate() {
@@ -13,28 +18,25 @@ public class Coordinate {
 		this.y = y;
 	}
 
-	public int simulateAddX(int x) {
-		return getX() + x;
-	}
-
-	public void addX(int x) {
-		this.x = simulateAddX(x);
-	}
-
-	public int simulateAddY(int y) {
-		return getY() + y;
-	}
-
-	public void addY(int y) {
-		this.y = simulateAddY(y);
-	}
-
 	public int getX() {
 		return x;
 	}
 
 	public int getY() {
 		return y;
+	}
+
+	public Coordinate simulate(Coordinate coordinate) {
+		int x = getX() + coordinate.getX();
+		int y = getY() + coordinate.getY();
+		return new Coordinate(x, y);
+	}
+
+	public void add(Coordinate coordinate) {
+		Coordinate simulate = simulate(coordinate);
+
+		this.x = simulate.getX();
+		this.y = simulate.getY();
 	}
 
 	@Override

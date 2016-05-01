@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.test.elo7.spacial.probes.exception.PlateauLimitException;
+import com.test.elo7.spacial.probes.exception.ProbeInvalidePositionException;
 import com.test.elo7.spacial.probes.exception.ProbeNotFoundException;
 import com.test.elo7.spacial.probes.model.Action;
 import com.test.elo7.spacial.probes.model.Mission;
@@ -20,7 +21,7 @@ public class ProbeService {
 	@Autowired
 	private ProbeRepository probeRepository;
 
-	public List<Probe> explorer(Mission mission) {
+	public List<Probe> explorer(Mission mission) throws ProbeInvalidePositionException {
 
 		Plateau plateau = mission.getPlateau();
 		List<Probe> probes = mission.getProbes();
@@ -57,15 +58,16 @@ public class ProbeService {
 	private void explorer(Probe probe, List<Action> actions) {
 		try {
 			probe.execute(actions);
-		} catch (PlateauLimitException e) {
+		} catch (PlateauLimitException | ProbeInvalidePositionException e) {
 			probe.setError(e.getMessage());
 		}
 	}
 
-	private void prepareProbes(Plateau plateau, List<Probe> probes) {
-		probes.forEach(probe -> {
+	private void prepareProbes(Plateau plateau, List<Probe> probes) throws ProbeInvalidePositionException {
+		for (Probe probe : probes) {
 			probe.setPlateau(plateau);
+			plateau.addProbe(probe);
 			probeRepository.addProbe(probe);
-		});
+		};
 	}
 }

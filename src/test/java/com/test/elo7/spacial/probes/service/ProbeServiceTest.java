@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.test.elo7.spacial.probes.exception.ProbeInvalidePositionException;
 import com.test.elo7.spacial.probes.exception.ProbeNotFoundException;
 import com.test.elo7.spacial.probes.model.Action;
 import com.test.elo7.spacial.probes.model.Coordinate;
@@ -40,7 +41,7 @@ public class ProbeServiceTest {
 	private ProbeRepository probeRepository;
 
 	@Test
-	public void executeExploration() {
+	public void executeExploration() throws ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(5, 5));
 		Probe probe1 = new Probe(1, new Coordinate(2, 3), Direction.S);

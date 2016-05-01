@@ -1,33 +1,46 @@
 package com.test.elo7.spacial.probes.model;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.test.elo7.spacial.probes.exception.PlateauLimitException;
+import com.test.elo7.spacial.probes.exception.ProbeInvalidePositionException;
 
 public class Probe {
 
-	private int id;
+	@NotNull(message = "Probe id is required!")
+	private Integer id;
 
 	@JsonIgnore
 	private Plateau plateau;
+
+	@NotNull(message = "Probe coordinate is required!")
 	private Coordinate coordinate;
+
+	@NotNull(message = "Probe direction is required!")
 	private Direction direction;
+	private Map<String, String> links;
 
 	@JsonInclude(Include.NON_NULL)
 	private String error;
 
 	protected Probe() {
+		this.links = new HashMap<>();
 	}
 
-	public Probe(int id, Coordinate coordinate, Direction direction) {
+	public Probe(Integer id, Coordinate coordinate, Direction direction) {
+		this();
 
-		if (Objects.isNull(coordinate) || Objects.isNull(direction)) {
-			throw new IllegalArgumentException(
-					String.format("Invalid parameters coordinate : [%s], direction [%s]", coordinate, direction));
+		if (Objects.isNull(id) || Objects.isNull(coordinate) || Objects.isNull(direction)) {
+			throw new IllegalArgumentException(String.format(
+					"Invalid parameters id : [%d] coordinate : [%s], direction [%s]", id, coordinate, direction));
 		}
 
 		this.id = id;
@@ -35,7 +48,7 @@ public class Probe {
 		this.direction = direction;
 	}
 
-	public void execute(List<Action> actions) throws PlateauLimitException {
+	public void execute(List<Action> actions) throws PlateauLimitException, ProbeInvalidePositionException {
 
 		for (Action action : actions) {
 			if (Action.M.equals(action)) {
@@ -46,30 +59,25 @@ public class Probe {
 		}
 	}
 
-	private void move() throws PlateauLimitException {
+	private void move() throws PlateauLimitException, ProbeInvalidePositionException {
 
-		if (coordinate.simulateAddX(direction.getCoordinate().getX()) <= plateau.getLimitX()) {
-			coordinate.addX(direction.getCoordinate().getX());
-		} else {
-			throw getPlateauLimitException();
-		}
+		Coordinate simulatedCoordinate = coordinate.simulate(direction.getCoordinate());
 
-		if (coordinate.simulateAddY(direction.getCoordinate().getY()) <= plateau.getLimitY()) {
-			coordinate.addY(direction.getCoordinate().getY());
-		} else {
-			throw getPlateauLimitException();
-		}
+		plateau.validateCoordinate(simulatedCoordinate);
 
-	}
+		coordinate.add(direction.getCoordinate());
 
-	private PlateauLimitException getPlateauLimitException() throws PlateauLimitException {
-		return new PlateauLimitException(
-				String.format("The probe tried to exceed the plateau limit: probe position [%s], plateau limit [%s].",
-						this.coordinate, plateau.getArea()));
 	}
 
 	private void changeDirection(Action action) {
 		direction = direction.rotateFor(action);
+	}
+
+	public Map<String, String> getLinks() {
+		links.put("get", "/probe/" + id);
+		links.put("delete", "/probe/" + id);
+		links.put("put", "/probe/" + id);
+		return links;
 	}
 
 	public int getId() {

@@ -9,11 +9,12 @@ import java.util.List;
 import org.junit.Test;
 
 import com.test.elo7.spacial.probes.exception.PlateauLimitException;
+import com.test.elo7.spacial.probes.exception.ProbeInvalidePositionException;
 
 public class ProbeTest {
 
 	@Test
-	public void valodateRotate() throws PlateauLimitException {
+	public void valodateRotate() throws PlateauLimitException, ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(5, 5));
 		Coordinate coordinate = new Coordinate(0, 0);
@@ -33,7 +34,7 @@ public class ProbeTest {
 	}
 
 	@Test
-	public void validateMove() throws PlateauLimitException {
+	public void validateMove() throws PlateauLimitException, ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(5, 8));
 		Coordinate coordinate = new Coordinate(1, 5);
@@ -55,7 +56,7 @@ public class ProbeTest {
 	}
 
 	@Test
-	public void validateRotateAndeMove() throws PlateauLimitException {
+	public void validateRotateAndeMove() throws PlateauLimitException, ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(5, 5));
 		Coordinate coordinate = new Coordinate(1, 2);
@@ -79,7 +80,7 @@ public class ProbeTest {
 	}
 
 	@Test
-	public void validateRotateAndeMove2() throws PlateauLimitException {
+	public void validateRotateAndeMove2() throws PlateauLimitException, ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(5, 5));
 		Coordinate coordinate = new Coordinate(3, 3);
@@ -103,7 +104,7 @@ public class ProbeTest {
 	}
 
 	@Test(expected = PlateauLimitException.class)
-	public void erroToMoveInAxisY() throws PlateauLimitException {
+	public void erroToMoveInAxisY() throws PlateauLimitException, ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(3, 3));
 		Coordinate coordinate = new Coordinate(0, 0);
@@ -123,7 +124,7 @@ public class ProbeTest {
 	}
 
 	@Test(expected = PlateauLimitException.class)
-	public void erroToMoveInAxisX() throws PlateauLimitException {
+	public void erroToMoveInAxisX() throws PlateauLimitException, ProbeInvalidePositionException {
 		// GIVEN
 		Plateau plateau = new Plateau(new Coordinate(3, 3));
 		Coordinate coordinate = new Coordinate(0, 0);

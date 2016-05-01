@@ -23,10 +23,10 @@ public enum Direction {
 
 	private Direction getByOrdinal(int directionOrdinal) {
 
-		if (directionOrdinal > 3) {
+		if (directionOrdinal > Direction.values().length - 1) {
 			directionOrdinal = 0;
 		} else if (directionOrdinal < 0) {
-			directionOrdinal = 3;
+			directionOrdinal = Direction.values().length - 1;
 		}
 
 		return Direction.values()[directionOrdinal];

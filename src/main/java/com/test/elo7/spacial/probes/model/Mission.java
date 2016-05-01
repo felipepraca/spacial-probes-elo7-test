@@ -4,10 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.NotNull;
+
 public class Mission {
 
+	@NotNull(message = "Plateau is required!")
 	private Plateau plateau;
+
+	@NotNull(message = "Probes is required!")
 	private List<Probe> probes;
+
 	private Map<Integer, List<Action>> actions = new HashMap<>();
 
 	public Plateau getPlateau() {

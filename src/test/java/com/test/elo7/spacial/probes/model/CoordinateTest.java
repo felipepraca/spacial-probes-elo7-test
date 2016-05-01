@@ -9,12 +9,10 @@ public class CoordinateTest {
 	@Test
 	public void addOnAxisX() {
 		// GIVEN
-		int x = 1;
-
 		Coordinate coordinate = new Coordinate(3, 2);
 
 		// WHEN
-		coordinate.addX(x);
+		coordinate.add(Direction.E.getCoordinate());
 
 		// THEN
 		assertEquals(4, coordinate.getX());
@@ -23,12 +21,10 @@ public class CoordinateTest {
 	@Test
 	public void addOnAxisY() {
 		// GIVEN
-		int y = 1;
-
 		Coordinate coordinate = new Coordinate();
 
 		// WHEN
-		coordinate.addY(y);
+		coordinate.add(Direction.N.getCoordinate());
 
 		// THEN
 		assertEquals(1, coordinate.getY());
@@ -37,27 +33,25 @@ public class CoordinateTest {
 	@Test
 	public void simulateOnAxisX() {
 		// GIVEN
-		int x = 1;
 		Coordinate coordinate = new Coordinate();
 
 		// WHEN
-		int simulateAddX = coordinate.simulateAddX(x);
+		Coordinate simulate = coordinate.simulate(Direction.W.getCoordinate());
 
 		// THEN
-		assertEquals(1, simulateAddX);
+		assertEquals(new Coordinate(-1, 0), simulate);
 	}
 
 	@Test
 	public void simulateOnAxisY() {
 		// GIVEN
-		int y = 1;
 		Coordinate coordinate = new Coordinate(5, 6);
 
 		// WHEN
-		int simulateAddY = coordinate.simulateAddY(y);
+		Coordinate simulate = coordinate.simulate(Direction.S.getCoordinate());
 
 		// THEN
-		assertEquals(7, simulateAddY);
+		assertEquals(new Coordinate(5, 5), simulate);
 	}
 
 }
